@@ -2,7 +2,11 @@ import _ from 'lodash';
 
 export default class Terrain {
   constructor() {
-    this.heightMap = this._generateHeightMap();
+    this._heightMap = this._generateHeightMap();
+  }
+
+  get heightMap() {
+    return this._heightMap.map((height) => -height);
   }
 
   render() {
@@ -67,10 +71,9 @@ export default class Terrain {
     c.beginPath();
 
     // Path
-    const canvasHeightMap = this.heightMap.map((height) => -height);
-    c.moveTo(0, canvasHeightMap[0]);
+    c.moveTo(0, this.heightMap[0]);
     for (let i = 1; i < this.heightMap.length; i++) {
-      c.lineTo(i * renderOptions.xSpacing, canvasHeightMap[i]);
+      c.lineTo(i * renderOptions.xSpacing, this.heightMap[i]);
     }
     c.lineTo((this.heightMap.length - 1) * renderOptions.xSpacing, 0);
     c.lineTo(0, 0);
